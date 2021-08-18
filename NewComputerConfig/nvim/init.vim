@@ -1,11 +1,12 @@
+
 " set runtimepath^=~/ runtimepath+=~/
 " let &packpath = &runtimepath
 " source ~/.vimrc
-if exists('g:vscode')
+" if exists('g:vscode')
     " VSCode extension
-else
+" else
     " ordinary neovim
-endif
+" endif
 
 " Don't try to be vi compatible
 set nocompatible
@@ -15,62 +16,64 @@ filetype off
 
 " Vundle Plugin Info
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" set rtp+=~/.vim/bundle/Vundle.vim
+call plug#begin('~/.vim/plugged')
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 " let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+" Plugin 'VundleVim/Vundle.vim'
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
 " Git plugin
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 
-Plugin 'neoclide/coc.nvim'
+" Plugin 'neoclide/coc.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plugin 'nvim-treesitter/nvim-treesitter'
-Plugin 'vim-utils/vim-man'
+Plug 'vim-utils/vim-man'
 " Plugin 'bfrg/vim-cpp-modern'
-Plugin 'scrooloose/nerdtree'
-Plugin 'sainnhe/gruvbox-material'
+Plug 'scrooloose/nerdtree'
+Plug 'sainnhe/gruvbox-material'
 " Plugin 'sheerun/vim-polyglot'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'fedorenchik/fasm.vim'
-Plugin 'jackguo380/vim-lsp-cxx-highlight'
-Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'itchyny/lightline.vim' 
-Plugin 'cdelledonne/vim-cmake'
-Plugin 'ludovicchabant/vim-gutentags'
+Plug 'airblade/vim-gitgutter'
+Plug 'fedorenchik/fasm.vim'
+Plug 'jackguo380/vim-lsp-cxx-highlight'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
+Plug 'itchyny/lightline.vim' 
+Plug 'cdelledonne/vim-cmake'
+Plug 'svermeulen/vim-easyclip'
+Plug 'ludovicchabant/vim-gutentags'
 
 " NeoVim Telescope + Dependencies
-Plugin 'nvim-lua/popup.nvim'
-Plugin 'nvim-lua/plenary.nvim'
-Plugin 'nvim-telescope/telescope.nvim'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
-Plugin 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-web-devicons'
 
 " Plugin 'SirVer/ultisnips'
 
 " Edit and review Github issues
-Plugin 'pwntester/octo.nvim'
+" Plugin 'pwntester/octo.nvim'
 
-Plugin 'tikhomirov/vim-glsl'
-Plugin 'shirk/vim-gas'
-Plugin 'junegunn/fzf'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'lervag/vimtex'
-Plugin 'mg979/vim-visual-multi'
+Plug 'tikhomirov/vim-glsl'
+" Plugin 'shirk/vim-gas'
+Plug 'junegunn/fzf'
+Plug 'plasticboy/vim-markdown'
+Plug 'lervag/vimtex'
+Plug 'mg979/vim-visual-multi'
 " Git plugin not hosted on GitHub
-Plugin 'git://git.wincent.com/command-t.git'
+Plug 'git://git.wincent.com/command-t.git'
 " The sparkup vim script is in a subdirectory of this repo called vim.
 " Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Install L9 and avoid a Naming conflict if you've already installed a
 " different version somewhere else.
 " Plugin 'ascenator/L9', {'name': 'newL9'}
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
+call plug#end()            " required
 " For plugins to load correctly
 filetype plugin indent on    " required
 
@@ -183,7 +186,11 @@ set showmatch
 set smartindent
 map <leader><space> :let @/=''<cr> " clear search
 
-" Remap help key.
+" Copy and paste from separate instances of vim
+" vmap <leader>y !xsel -i -b && xsel -b <CR>
+" nmap <leader>p :r !xsel -b <CR>
+
+" Remap help ke.
 inoremap <F1> <ESC>:set invfullscreen<CR>
 nnoremap <F1> :set invfullscreen<CR>
 vnoremap <F1> :set invfullscreen<CR>
@@ -401,5 +408,3 @@ let g:webdevicons_enable = 1
 let g:webdevicons_enable_nerdtree = 1
 " Adding the custom source to denite
 let g:webdevicons_enable_denite = 1
-
-
