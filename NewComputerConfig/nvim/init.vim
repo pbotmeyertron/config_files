@@ -240,6 +240,13 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 autocmd BufReadPre *.asm let g:asmsyntax = "fasm"
 let g:filetype_inc = "fasm"
 
+
+" Make NeoVim associate .h files with C and not C++
+augroup project
+  autocmd!
+  autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+augroup END
+
 " VimTex Settings
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
