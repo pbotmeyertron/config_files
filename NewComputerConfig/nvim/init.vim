@@ -1,4 +1,3 @@
-
 " set runtimepath^=~/ runtimepath+=~/
 " let &packpath = &runtimepath
 " source ~/.vimrc
@@ -60,7 +59,8 @@ Plug 'kyazdani42/nvim-web-devicons'
 
 Plug 'tikhomirov/vim-glsl'
 " Plugin 'shirk/vim-gas'
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'plasticboy/vim-markdown'
 Plug 'lervag/vimtex'
 Plug 'mg979/vim-visual-multi'
@@ -415,3 +415,16 @@ let g:webdevicons_enable = 1
 let g:webdevicons_enable_nerdtree = 1
 " Adding the custom source to denite
 let g:webdevicons_enable_denite = 1
+
+" Helpful Commands, Links, Ideas, and Scripts
+"
+" This outputs the key shortcuts, with where they were defined, to a text file.
+" :redir! > vim_keys.txt
+" :silent verbose map
+" :redir END
+"
+"
+"
+"
+"
+"
