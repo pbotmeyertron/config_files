@@ -1,38 +1,24 @@
-" set runtimepath^=~/ runtimepath+=~/
-" let &packpath = &runtimepath
-" source ~/.vimrc
-" if exists('g:vscode')
-    " VSCode extension
-" else
-    " ordinary neovim
-" endif
-
 " Don't try to be vi compatible
 set nocompatible
 
 " Helps force plugins to load correctly when it is turned back on below
 filetype off
 
-" Vundle Plugin Info
-" set the runtime path to include Vundle and initialize
-" set rtp+=~/.vim/bundle/Vundle.vim
-call plug#begin('~/.vim/plugged')
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-" let Vundle manage Vundle, required
-" Plugin 'VundleVim/Vundle.vim'
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-" Git plugin
-Plug 'tpope/vim-fugitive'
+"==============================================================================
+" Plugin Config                                                  
+"==============================================================================
 
-" Plugin 'neoclide/coc.nvim'
+call plug#begin('~/.vim/plugged')
+Plug 'tpope/vim-fugitive'
+Plug 'ellisonleao/glow.nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plugin 'nvim-treesitter/nvim-treesitter'
 Plug 'vim-utils/vim-man'
+Plug 'junegunn/goyo.vim'
 " Plugin 'bfrg/vim-cpp-modern'
 Plug 'scrooloose/nerdtree'
+Plug 'junegunn/limelight.vim'
+" Plug 'sotte/presenting.vim'
 Plug 'sainnhe/gruvbox-material'
 " Plugin 'sheerun/vim-polyglot'
 Plug 'airblade/vim-gitgutter'
@@ -41,90 +27,64 @@ Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'itchyny/lightline.vim' 
+Plug 'numToStr/FTerm.nvim'
+Plug 'p00f/godbolt.nvim'
+Plug 'willchao612/vim-diagon'
 Plug 'cdelledonne/vim-cmake'
+Plug 'sotte/presenting.vim'
 Plug 'svermeulen/vim-easyclip'
 Plug 'ludovicchabant/vim-gutentags'
-
 " NeoVim Telescope + Dependencies
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-
 Plug 'kyazdani42/nvim-web-devicons'
-
 " Plugin 'SirVer/ultisnips'
-
 " Edit and review Github issues
 " Plugin 'pwntester/octo.nvim'
-
 Plug 'tikhomirov/vim-glsl'
 " Plugin 'shirk/vim-gas'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'lervag/vimtex'
 Plug 'mg979/vim-visual-multi'
-" Git plugin not hosted on GitHub
 Plug 'git://git.wincent.com/command-t.git'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
-" All of your Plugins must be added before the following line
 call plug#end()            " required
+
+"==============================================================================
+" Basic NeoVim Config                                                  
+"==============================================================================
+
 " For plugins to load correctly
-filetype plugin indent on    " required
+filetype plugin indent on 
 
-" Turn on syntax highlighting
 syntax on
-
-" Leader key = spacebar 
 let mapleader = " "
 let maplocalleader = " "
-
-" Security
+set conceallevel=3
 set modelines=0
-
-" Show line numbers
 set number
-
-" Show file stats
 set ruler
-
-" Show matching brace
 set showmatch
-" Don't jump the cursor back when closing a brace
 set matchtime=0
-
-" Remap ESC key to jk
 imap jk <Esc>
-
-" Remap nvim's awkward ctrl + '\' + 'n' to ESC for exiting terminal insert mode
 if has('nvim')
   tnoremap <Esc> <C-\><C-n>
   tnoremap <M-[> <Esc>
   tnoremap <C-v><Esc> <Esc> 
 endif
-
-" Encoding
 set encoding=utf-8
-
-" Set undo levels
 set undolevels=1000
-
 " Change directory to the current file being worked on
 autocmd BufEnter * silent! lcd %:p:h 
-
-" Folding Settings
 set foldenable
 set foldlevelstart=10
 set foldnestmax=10
 nnoremap<space> za
 set foldmethod=indent
-
-" Whitespace
 set wrap
 set textwidth=80
 set formatoptions=tcqrn1
@@ -134,49 +94,26 @@ set softtabstop=4
 set expandtab
 set noshiftround
 set autoindent
-
-" Redraw screen only when necessary
 set lazyredraw
-
-" Cursor motion
 set scrolloff=10
 set backspace=indent,eol,start
 set matchpairs+=<:> " use % to jump between pairs
 runtime! macros/matchit.vim
-
-" Move up/down editor lines
 nnoremap j gj
 nnoremap k gk
-
-" Allow hidden buffers
 set hidden
-
-" Rendering
 set ttyfast
-
-" Paste outside of Vim
 set clipboard=unnamedplus
-
 " Quicker Window Movement
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
-
-" Font
-"set guifont=Fira\ Code\ Retina:h11
-
-" Status bar
 set laststatus=2
-
-" Last line
 set showmode
 set showcmd
-
 set wildmode=longest,list,full
 set wildmenu
-
-" Searching
 nnoremap <leader><space> :nohlsearch<CR>
 set hlsearch
 set incsearch
@@ -185,43 +122,39 @@ set smartcase
 set showmatch
 set smartindent
 map <leader><space> :let @/=''<cr> " clear search
-
-" Copy and paste from separate instances of vim
-" vmap <leader>y !xsel -i -b && xsel -b <CR>
-" nmap <leader>p :r !xsel -b <CR>
-
-" Remap help ke.
-inoremap <F1> <ESC>:set invfullscreen<CR>
-nnoremap <F1> :set invfullscreen<CR>
-vnoremap <F1> :set invfullscreen<CR>
-
-" Formatting
 map <leader>q gqip
-
 " Visualize tabs and newlines
 set listchars=tab:▸\ ,eol:¬
 " Uncomment this to enable by default:
 " set list " To enable by default
 " Or use your leader key + l to toggle on/off
 map <leader>e :set list!<CR> " Toggle tabs and EOL
+" Make NeoVim associate .h files with C and not C++
+augroup project
+  autocmd!
+  autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+augroup END
 
-" Colorscheme
-"
+
+"==============================================================================
+" Colorscheme                                                  
+"==============================================================================
 
 if has('termguicolors')
   set termguicolors
 endif
 set background=dark
-
 let g:gruvbox_material_background = 'hard'
 let g:gruvbox_material_enable_italic = 1
 let g:gruvbox_material_disable_italic_comment = 0
 let g:gruvbox_material_cursor = 'green'
-  
 let g:lightline = {}
 let g:lightline.colorscheme = 'gruvbox_material'
-
 colorscheme gruvbox-material
+
+"==============================================================================
+" Plugin-Specific Options and Config                                                  
+"==============================================================================
 
 " NERDTree Options
 nnoremap <leader>n :NERDTreeFocus<CR>
@@ -240,18 +173,12 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 autocmd BufReadPre *.asm let g:asmsyntax = "fasm"
 let g:filetype_inc = "fasm"
 
-
-" Make NeoVim associate .h files with C and not C++
-augroup project
-  autocmd!
-  autocmd BufRead,BufNewFile *.h,*.c set filetype=c
-augroup END
-
 " VimTex Settings
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
-set conceallevel=1
+let g:vimtex_compiler_method = 'latexrun'
+" set conceallevel=1
 let g:tex_conceal='abdmg'
 
 " GutenTags Settings
@@ -408,7 +335,6 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
-" File Icons
 " loading the plugin
 let g:webdevicons_enable = 1
 " adding the flags to NERDTree
@@ -416,15 +342,50 @@ let g:webdevicons_enable_nerdtree = 1
 " Adding the custom source to denite
 let g:webdevicons_enable_denite = 1
 
-" Helpful Commands, Links, Ideas, and Scripts
-"
+let g:glow_binary_path = $HOME . "/bin"
+let g:glow_border = "rounded"
+
+" au FileType md let b:presenting_slide_separator = '\v(^|\n)\~{4,}'
+" au FileType rst let b:presenting_slide_separator = '\v(^|\n)\~{4,}'
+
+" Diagon Remaps
+noremap <Leader>dm :Diagon Math<CR>
+noremap <Leader>ds :Diagon Sequence<CR>
+noremap <Leader>dt :Diagon Tree<CR>
+noremap <Leader>df :Diagon Frame<CR>
+noremap <Leader>db :Diagon Table<CR>
+noremap <Leader>dp :Diagon GraphPlanar<CR>
+noremap <Leader>dg :Diagon GraphDAG<CR>
+noremap <Leader>dc :Diagon Flowchart<CR>
+
+" Slides Presentation Settings
+noremap <Left>  :silent bp<CR> :redraw!<CR>
+noremap <Right> :silent bn<CR> :redraw!<CR>
+nmap <F5> :set  number! showmode! showcmd! hidden! ruler!<CR>
+nmap <F2> :call DisplayPresentationBoundaries()<CR>
+nmap <F3> :call FindExecuteCommand()<CR>
+
+" Godbolt Settings
+" lua << EOF
+" require("godbolt").setup({
+"     c = { compiler = "cg112", options = {} },
+"     cpp = { compiler = "g112", options = {} },
+"     rust = { compiler = "r1560", options = {} }
+"     -- any_additional_filetype = { compiler = ..., options = ... }
+" })
+" EOF
+
+" Floating Terminal Settings
+lua << EOF
+vim.cmd('command! FTermOpen lua require("FTerm").open()')
+EOF
+
+nmap <F6> :highlight! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg<CR>
+
+"==============================================================================
+" Helpful Commands, Links, Ideas, and Scripts                                                  
+"==============================================================================
 " This outputs the key shortcuts, with where they were defined, to a text file.
 " :redir! > vim_keys.txt
 " :silent verbose map
 " :redir END
-"
-"
-"
-"
-"
-"
