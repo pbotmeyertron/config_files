@@ -18,7 +18,7 @@ Plug 'junegunn/goyo.vim'
 " Plugin 'bfrg/vim-cpp-modern'
 Plug 'scrooloose/nerdtree'
 Plug 'junegunn/limelight.vim'
-" Plug 'sotte/presenting.vim'
+Plug 'sotte/presenting.vim'
 Plug 'sainnhe/gruvbox-material'
 " Plugin 'sheerun/vim-polyglot'
 Plug 'airblade/vim-gitgutter'
@@ -26,11 +26,13 @@ Plug 'fedorenchik/fasm.vim'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
-Plug 'itchyny/lightline.vim' 
+" Plug 'itchyny/lightline.vim' 
 Plug 'numToStr/FTerm.nvim'
 Plug 'p00f/godbolt.nvim'
 Plug 'willchao612/vim-diagon'
 Plug 'cdelledonne/vim-cmake'
+" Plug 'NTBBloodbath/galaxyline.nvim'
+Plug 'nvim-lualine/lualine.nvim'
 Plug 'sotte/presenting.vim'
 Plug 'svermeulen/vim-easyclip'
 Plug 'ludovicchabant/vim-gutentags'
@@ -39,16 +41,12 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
-" Plugin 'SirVer/ultisnips'
-" Edit and review Github issues
 " Plugin 'pwntester/octo.nvim'
 Plug 'tikhomirov/vim-glsl'
-" Plugin 'shirk/vim-gas'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-Plug 'lervag/vimtex'
 Plug 'mg979/vim-visual-multi'
 Plug 'git://git.wincent.com/command-t.git'
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -130,10 +128,10 @@ set listchars=tab:▸\ ,eol:¬
 " Or use your leader key + l to toggle on/off
 map <leader>e :set list!<CR> " Toggle tabs and EOL
 " Make NeoVim associate .h files with C and not C++
-augroup project
-  autocmd!
-  autocmd BufRead,BufNewFile *.h,*.c set filetype=c
-augroup END
+" augroup project
+"   autocmd!
+"   autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+" augroup END
 
 
 "==============================================================================
@@ -174,12 +172,14 @@ autocmd BufReadPre *.asm let g:asmsyntax = "fasm"
 let g:filetype_inc = "fasm"
 
 " VimTex Settings
-let g:tex_flavor='latex'
-let g:vimtex_view_method='zathura'
-let g:vimtex_quickfix_mode=0
-let g:vimtex_compiler_method = 'latexrun'
-" set conceallevel=1
-let g:tex_conceal='abdmg'
+" let g:tex_flavor='latex'
+" let g:vimtex_view_method='zathura'
+" let g:vimtex_quickfix_mode=0
+" let g:vimtex_compiler_method = 'latexmk'
+" " set conceallevel=1
+" let g:tex_conceal='abdmg'
+
+let g:livepreview_previewer = 'zathura'
 
 " GutenTags Settings
 set statusline+=%{gutentags#statusline()}
@@ -362,8 +362,7 @@ noremap <Leader>dc :Diagon Flowchart<CR>
 noremap <Left>  :silent bp<CR> :redraw!<CR>
 noremap <Right> :silent bn<CR> :redraw!<CR>
 nmap <F5> :set  number! showmode! showcmd! hidden! ruler!<CR>
-nmap <F2> :call DisplayPresentationBoundaries()<CR>
-nmap <F3> :call FindExecuteCommand()<CR>
+nmap <F6> :highlight! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg<CR>
 
 " Godbolt Settings
 " lua << EOF
@@ -375,12 +374,47 @@ nmap <F3> :call FindExecuteCommand()<CR>
 " })
 " EOF
 
+" UltiSnips Config
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+
 " Floating Terminal Settings
 lua << EOF
 vim.cmd('command! FTermOpen lua require("FTerm").open()')
 EOF
 
-nmap <F6> :highlight! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg<CR>
+
+lua << EOF
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'auto',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {},
+    always_divide_middle = true,
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  extensions = {}
+}
+EOF
 
 "==============================================================================
 " Helpful Commands, Links, Ideas, and Scripts                                                  
