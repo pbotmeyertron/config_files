@@ -1,4 +1,4 @@
-" Don't try to be vi compatible
+" Don't tr to be vi compatible
 set nocompatible
 
 " Helps force plugins to load correctly when it is turned back on below
@@ -10,29 +10,37 @@ filetype off
 
 call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-fugitive'
-Plug 'ellisonleao/glow.nvim'
+" Plug 'ellisonleao/glow.nvim'
+" Plug 'neoclide/coc.nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plugin 'nvim-treesitter/nvim-treesitter'
+" Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'vim-utils/vim-man'
 Plug 'junegunn/goyo.vim'
-" Plugin 'bfrg/vim-cpp-modern'
+" Plug 'bfrg/vim-cpp-modern'
 Plug 'scrooloose/nerdtree'
+Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'junegunn/limelight.vim'
-Plug 'sotte/presenting.vim'
+" Plug 'sotte/presenting.vim'
 Plug 'sainnhe/gruvbox-material'
-" Plugin 'sheerun/vim-polyglot'
+
+" TODO: remove once vim-lsp-cxx-highlight is updated
+Plug 'sheerun/vim-polyglot'
+" TODO: revisit once updated
+" Plug 'jackguo380/vim-lsp-cxx-highlight'
+
 Plug 'airblade/vim-gitgutter'
 Plug 'fedorenchik/fasm.vim'
-Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 " Plug 'itchyny/lightline.vim' 
 Plug 'numToStr/FTerm.nvim'
 Plug 'p00f/godbolt.nvim'
+Plug 'MTDL9/vim-log-highlighting'
 Plug 'willchao612/vim-diagon'
 Plug 'cdelledonne/vim-cmake'
 " Plug 'NTBBloodbath/galaxyline.nvim'
 Plug 'nvim-lualine/lualine.nvim'
+" Plug 'rhysd/open-pdf.vim'
 Plug 'sotte/presenting.vim'
 Plug 'svermeulen/vim-easyclip'
 Plug 'ludovicchabant/vim-gutentags'
@@ -127,11 +135,11 @@ set listchars=tab:▸\ ,eol:¬
 " set list " To enable by default
 " Or use your leader key + l to toggle on/off
 map <leader>e :set list!<CR> " Toggle tabs and EOL
-" Make NeoVim associate .h files with C and not C++
-" augroup project
-"   autocmd!
-"   autocmd BufRead,BufNewFile *.h,*.c set filetype=c
-" augroup END
+" Make NeoVim associate .h files with C++
+augroup project
+  autocmd!
+  autocmd BufRead,BufNewFile *.h,*.cpp,*.hpp,*.cc,*.cxx,.*.hxx set filetype=cpp
+augroup END
 
 
 "==============================================================================
@@ -364,20 +372,23 @@ noremap <Right> :silent bn<CR> :redraw!<CR>
 nmap <F5> :set  number! showmode! showcmd! hidden! ruler!<CR>
 nmap <F6> :highlight! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg<CR>
 
-" Godbolt Settings
-" lua << EOF
-" require("godbolt").setup({
-"     c = { compiler = "cg112", options = {} },
-"     cpp = { compiler = "g112", options = {} },
-"     rust = { compiler = "r1560", options = {} }
-"     -- any_additional_filetype = { compiler = ..., options = ... }
-" })
-" EOF
-
-" UltiSnips Config
-let g:UltiSnipsExpandTrigger = '<tab>'
-let g:UltiSnipsJumpForwardTrigger = '<tab>'
-let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+" Godbolt Disassembly Settings
+lua << EOF
+require("godbolt").setup({
+    c = { compiler = "cg112", options = {} },
+    cpp = { compiler = "g112", options = {} },
+    rust = { compiler = "r1560", options = {} },
+    -- any_additional_filetype = { compiler = ..., options = ... },
+    quickfix = {
+        enable = false, -- whether to populate the quickfix list in case of errors
+        auto_open = false -- whether to open the quickfix list if the compiler outputs errors
+    }
+})
+EOF
+" " UltiSnips Config
+" let g:UltiSnipsExpandTrigger = '<tab>'
+" let g:UltiSnipsJumpForwardTrigger = '<tab>'
+" let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
 " Floating Terminal Settings
 lua << EOF
@@ -415,7 +426,7 @@ require('lualine').setup {
   extensions = {}
 }
 EOF
-
+command! WipeReg or i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor
 "==============================================================================
 " Helpful Commands, Links, Ideas, and Scripts                                                  
 "==============================================================================
