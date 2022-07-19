@@ -1,47 +1,33 @@
-" Don't tr to be vi compatible
+" Don't try to be vi compatible
 set nocompatible
-
 " Helps force plugins to load correctly when it is turned back on below
 filetype off
 
 "==============================================================================
 " Plugin Config                                                  
 "==============================================================================
-
 call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-fugitive'
-" Plug 'ellisonleao/glow.nvim'
-" Plug 'neoclide/coc.nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'vim-utils/vim-man'
-Plug 'junegunn/goyo.vim'
-" Plug 'bfrg/vim-cpp-modern'
+" Plug 'junegunn/goyo.vim'
 Plug 'scrooloose/nerdtree'
-Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'junegunn/limelight.vim'
-" Plug 'sotte/presenting.vim'
+" Plug 'junegunn/limelight.vim'
+Plug 'machakann/vim-sandwich'
+Plug 'kevinhwang91/nvim-hlslens'
 Plug 'sainnhe/gruvbox-material'
-
-" TODO: remove once vim-lsp-cxx-highlight is updated
-Plug 'sheerun/vim-polyglot'
-" TODO: revisit once updated
-" Plug 'jackguo380/vim-lsp-cxx-highlight'
-
 Plug 'airblade/vim-gitgutter'
 Plug 'fedorenchik/fasm.vim'
+Plug 'Raimondi/delimitMate'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
-" Plug 'itchyny/lightline.vim' 
 Plug 'numToStr/FTerm.nvim'
 Plug 'p00f/godbolt.nvim'
 Plug 'MTDL9/vim-log-highlighting'
 Plug 'willchao612/vim-diagon'
 Plug 'cdelledonne/vim-cmake'
-" Plug 'NTBBloodbath/galaxyline.nvim'
 Plug 'nvim-lualine/lualine.nvim'
-" Plug 'rhysd/open-pdf.vim'
-Plug 'sotte/presenting.vim'
 Plug 'svermeulen/vim-easyclip'
 Plug 'ludovicchabant/vim-gutentags'
 " NeoVim Telescope + Dependencies
@@ -54,7 +40,7 @@ Plug 'tikhomirov/vim-glsl'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+" Plug 'plasticboy/vim-markdown'
 Plug 'mg979/vim-visual-multi'
 Plug 'git://git.wincent.com/command-t.git'
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -63,7 +49,6 @@ call plug#end()            " required
 "==============================================================================
 " Basic NeoVim Config                                                  
 "==============================================================================
-
 " For plugins to load correctly
 filetype plugin indent on 
 
@@ -135,12 +120,17 @@ set listchars=tab:▸\ ,eol:¬
 " set list " To enable by default
 " Or use your leader key + l to toggle on/off
 map <leader>e :set list!<CR> " Toggle tabs and EOL
-" Make NeoVim associate .h files with C++
+
+" Make NeoVim associate .h files with C and not C++
+"augroup project
+"  autocmd!
+"  autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+"augroup END
+
 augroup project
   autocmd!
   autocmd BufRead,BufNewFile *.h,*.cpp,*.hpp,*.cc,*.cxx,.*.hxx set filetype=cpp
 augroup END
-
 
 "==============================================================================
 " Colorscheme                                                  
@@ -161,7 +151,6 @@ colorscheme gruvbox-material
 "==============================================================================
 " Plugin-Specific Options and Config                                                  
 "==============================================================================
-
 " NERDTree Options
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
@@ -174,7 +163,6 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
     \ quit | endif
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
-
 " FASM Syntax
 autocmd BufReadPre *.asm let g:asmsyntax = "fasm"
 let g:filetype_inc = "fasm"
@@ -191,7 +179,6 @@ let g:livepreview_previewer = 'zathura'
 
 " GutenTags Settings
 set statusline+=%{gutentags#statusline()}
-
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
 if has("nvim-0.5.0") || has("patch-8.1.1564")
@@ -209,12 +196,10 @@ inoremap <silent><expr> <TAB>
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-
 " Use <c-space> to trigger completion.
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
@@ -237,7 +222,6 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
@@ -253,14 +237,12 @@ endfunction
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
-
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
-
 augroup mygroup
   autocmd!
   " Setup formatexpr specified filetype(s).
@@ -268,17 +250,14 @@ augroup mygroup
   " Update signature help on jump placeholder.
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
-
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
-
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
-
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
 xmap if <Plug>(coc-funcobj-i)
@@ -289,7 +268,6 @@ xmap ic <Plug>(coc-classobj-i)
 omap ic <Plug>(coc-classobj-i)
 xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
-
 " Remap <C-f> and <C-b> for scroll float windows/popups.
 if has('nvim-0.4.0') || has('patch-8.2.0750')
   nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
@@ -307,18 +285,15 @@ xmap <silent> <C-s> <Plug>(coc-range-select)
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
-
 " Add `:Fold` command to fold current buffer.
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
 " Mappings for CoCList
 " Show all diagnostics.
 nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
@@ -336,26 +311,21 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
-
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
 " loading the plugin
 let g:webdevicons_enable = 1
 " adding the flags to NERDTree
 let g:webdevicons_enable_nerdtree = 1
 " Adding the custom source to denite
 let g:webdevicons_enable_denite = 1
-
 let g:glow_binary_path = $HOME . "/bin"
 let g:glow_border = "rounded"
-
 " au FileType md let b:presenting_slide_separator = '\v(^|\n)\~{4,}'
 " au FileType rst let b:presenting_slide_separator = '\v(^|\n)\~{4,}'
-
 " Diagon Remaps
 noremap <Leader>dm :Diagon Math<CR>
 noremap <Leader>ds :Diagon Sequence<CR>
@@ -365,37 +335,28 @@ noremap <Leader>db :Diagon Table<CR>
 noremap <Leader>dp :Diagon GraphPlanar<CR>
 noremap <Leader>dg :Diagon GraphDAG<CR>
 noremap <Leader>dc :Diagon Flowchart<CR>
-
 " Slides Presentation Settings
 noremap <Left>  :silent bp<CR> :redraw!<CR>
 noremap <Right> :silent bn<CR> :redraw!<CR>
 nmap <F5> :set  number! showmode! showcmd! hidden! ruler!<CR>
 nmap <F6> :highlight! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg<CR>
-
-" Godbolt Disassembly Settings
-lua << EOF
-require("godbolt").setup({
-    c = { compiler = "cg112", options = {} },
-    cpp = { compiler = "g112", options = {} },
-    rust = { compiler = "r1560", options = {} },
-    -- any_additional_filetype = { compiler = ..., options = ... },
-    quickfix = {
-        enable = false, -- whether to populate the quickfix list in case of errors
-        auto_open = false -- whether to open the quickfix list if the compiler outputs errors
-    }
-})
-EOF
-" " UltiSnips Config
-" let g:UltiSnipsExpandTrigger = '<tab>'
-" let g:UltiSnipsJumpForwardTrigger = '<tab>'
-" let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-
+" Godbolt Settings
+" lua << EOF
+" require("godbolt").setup({
+"     c = { compiler = "cg112", options = {} },
+"     cpp = { compiler = "g112", options = {} },
+"     rust = { compiler = "r1560", options = {} }
+"     -- any_additional_filetype = { compiler = ..., options = ... }
+" })
+" EOF
+" UltiSnips Config
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 " Floating Terminal Settings
 lua << EOF
 vim.cmd('command! FTermOpen lua require("FTerm").open()')
 EOF
-
-
 lua << EOF
 require('lualine').setup {
   options = {
@@ -426,11 +387,40 @@ require('lualine').setup {
   extensions = {}
 }
 EOF
-command! WipeReg or i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor
+" Tree-Sitter Syntax Highlighting Settings
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all"
+  ensure_installed = {"c", "cpp", "rust", "python"},
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- List of parsers to ignore installing (for "all")
+  ignore_install = { "javascript", "objective-cpp" },
+
+  highlight = {
+    -- `false` will disable the whole extension
+    enable = true,
+
+    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
+    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
+    -- the name of the parser)
+    -- list of language that will be disabled
+    disable = { "ruby", "objective-cpp" },
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
 "==============================================================================
 " Helpful Commands, Links, Ideas, and Scripts                                                  
 "==============================================================================
 " This outputs the key shortcuts, with where they were defined, to a text file.
 " :redir! > vim_keys.txt
 " :silent verbose map
-" :redir END
+" :redir END 
