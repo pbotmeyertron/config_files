@@ -13,10 +13,12 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'vim-utils/vim-man'
 " Plug 'junegunn/goyo.vim'
 Plug 'scrooloose/nerdtree'
+" Plug 'wfxr/minimap.vim', {'do': ':!cargo install --locked code-minimap'}
 " Plug 'junegunn/limelight.vim'
 Plug 'machakann/vim-sandwich'
 Plug 'kevinhwang91/nvim-hlslens'
 Plug 'sainnhe/gruvbox-material'
+Plug 'rhysd/vim-clang-format'
 Plug 'airblade/vim-gitgutter'
 Plug 'fedorenchik/fasm.vim'
 Plug 'Raimondi/delimitMate'
@@ -122,14 +124,14 @@ set listchars=tab:▸\ ,eol:¬
 map <leader>e :set list!<CR> " Toggle tabs and EOL
 
 " Make NeoVim associate .h files with C and not C++
-"augroup project
-"  autocmd!
-"  autocmd BufRead,BufNewFile *.h,*.c set filetype=c
-"augroup END
+" augroup project
+"   autocmd!
+"   autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+" augroup END
 
 augroup project
   autocmd!
-  autocmd BufRead,BufNewFile *.h,*.cpp,*.hpp,*.cc,*.cxx,.*.hxx set filetype=cpp
+  autocmd BufRead,BufNewFile *.hpp,*.cpp,*.cc,*.cxx,.*.hxx set filetype=cpp
 augroup END
 
 "==============================================================================
@@ -179,6 +181,29 @@ let g:livepreview_previewer = 'zathura'
 
 " GutenTags Settings
 set statusline+=%{gutentags#statusline()}
+
+
+" Set internal encoding of vim, not needed on neovim, since coc.nvim using some
+" unicode characters in the file autoload/float.vim
+set encoding=utf-8
+
+" TextEdit might fail if hidden is not set.
+set hidden
+
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+" Give more space for displaying messages.
+set cmdheight=2
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
 if has("nvim-0.5.0") || has("patch-8.1.1564")
@@ -246,7 +271,7 @@ nmap <leader>f  <Plug>(coc-format-selected)
 augroup mygroup
   autocmd!
   " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  autocmd FileType cpp setl formatexpr=CocAction('formatSelected')
   " Update signature help on jump placeholder.
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
@@ -336,9 +361,9 @@ noremap <Leader>dp :Diagon GraphPlanar<CR>
 noremap <Leader>dg :Diagon GraphDAG<CR>
 noremap <Leader>dc :Diagon Flowchart<CR>
 " Slides Presentation Settings
-noremap <Left>  :silent bp<CR> :redraw!<CR>
-noremap <Right> :silent bn<CR> :redraw!<CR>
-nmap <F5> :set  number! showmode! showcmd! hidden! ruler!<CR>
+" noremap <Left>  :silent bp<CR> :redraw!<CR>
+" noremap <Right> :silent bn<CR> :redraw!<CR>
+" nmap <F5> :set  number! showmode! showcmd! hidden! ruler!<CR>
 nmap <F6> :highlight! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg<CR>
 " Godbolt Settings
 " lua << EOF
@@ -391,13 +416,13 @@ EOF
 lua << EOF
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
-  ensure_installed = {"c", "cpp", "rust", "python"},
+  ensure_installed = {"c", "lua", "rust", "javascript", "python", "cpp", "haskell", "go"},
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
 
   -- List of parsers to ignore installing (for "all")
-  ignore_install = { "javascript", "objective-cpp" },
+  ignore_install = {},
 
   highlight = {
     -- `false` will disable the whole extension
@@ -407,7 +432,7 @@ require'nvim-treesitter.configs'.setup {
     -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
     -- the name of the parser)
     -- list of language that will be disabled
-    disable = { "ruby", "objective-cpp" },
+    disable = {},
 
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
@@ -423,4 +448,4 @@ EOF
 " This outputs the key shortcuts, with where they were defined, to a text file.
 " :redir! > vim_keys.txt
 " :silent verbose map
-" :redir END 
+" :redir END
