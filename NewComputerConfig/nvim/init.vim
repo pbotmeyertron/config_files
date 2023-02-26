@@ -18,6 +18,7 @@ Plug 'scrooloose/nerdtree'
 " Plug 'machakann/vim-sandwich'
 Plug 'kevinhwang91/nvim-hlslens'
 Plug 'sainnhe/gruvbox-material'
+Plug 'habamax/vim-godot'
 Plug 'github/copilot.vim'
 Plug 'rhysd/vim-clang-format'
 Plug 'airblade/vim-gitgutter'
@@ -125,15 +126,15 @@ set listchars=tab:▸\ ,eol:¬
 map <leader>e :set list!<CR> " Toggle tabs and EOL
 
 " Make NeoVim associate .h files with C and not C++
-"augroup project
-"  autocmd!
-"  autocmd BufRead,BufNewFile *.h,*.c set filetype=c
-"augroup END
-
 " augroup project
 "   autocmd!
-"   autocmd BufRead,BufNewFile *.hpp,*.cpp,*.cc,*.cxx,.*.hxx set filetype=cpp
+"   autocmd BufRead,BufNewFile *.h,*.c set filetype=c
 " augroup END
+  
+"augroup project
+"  autocmd!
+"  autocmd BufRead,BufNewFile *.hpp,*.cpp,*.cc,*.cxx,.*.hxx set filetype=cpp
+"augroup END
 
 "==============================================================================
 " Colorscheme                                                  
