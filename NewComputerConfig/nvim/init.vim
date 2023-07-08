@@ -13,6 +13,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Plug 'vim-utils/vim-man'
 " Plug 'junegunn/goyo.vim'
 Plug 'scrooloose/nerdtree'
+" Plug 'bfrg/vim-cpp-modern'
 " Plug 'wfxr/minimap.vim', {'do': ':!cargo install --locked code-minimap'}
 " Plug 'junegunn/limelight.vim'
 " Plug 'machakann/vim-sandwich'
@@ -126,10 +127,10 @@ set listchars=tab:▸\ ,eol:¬
 map <leader>e :set list!<CR> " Toggle tabs and EOL
 
 " Make NeoVim associate .h files with C and not C++
-" augroup project
-"   autocmd!
-"   autocmd BufRead,BufNewFile *.h,*.c set filetype=c
-" augroup END
+"augroup project
+"  autocmd!
+"  autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+"augroup END
   
 "augroup project
 "  autocmd!
