@@ -13,7 +13,6 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Plug 'vim-utils/vim-man'
 " Plug 'junegunn/goyo.vim'
 Plug 'scrooloose/nerdtree'
-" Plug 'bfrg/vim-cpp-modern'
 " Plug 'wfxr/minimap.vim', {'do': ':!cargo install --locked code-minimap'}
 " Plug 'junegunn/limelight.vim'
 " Plug 'machakann/vim-sandwich'
@@ -127,10 +126,10 @@ set listchars=tab:▸\ ,eol:¬
 map <leader>e :set list!<CR> " Toggle tabs and EOL
 
 " Make NeoVim associate .h files with C and not C++
-"augroup project
-"  autocmd!
-"  autocmd BufRead,BufNewFile *.h,*.c set filetype=c
-"augroup END
+augroup project
+  autocmd!
+  autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+augroup END
   
 "augroup project
 "  autocmd!
@@ -287,6 +286,9 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
+" Disable parameter hints.
+let g:coc_enable_message = '0'
+
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
 xmap <leader>a  <Plug>(coc-codeaction-selected)
@@ -357,6 +359,7 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>" Find files using Telescope command-line sugar.
+
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
@@ -369,22 +372,6 @@ let g:webdevicons_enable_nerdtree = 1
 let g:webdevicons_enable_denite = 1
 let g:glow_binary_path = $HOME . "/bin"
 let g:glow_border = "rounded"
-" au FileType md let b:presenting_slide_separator = '\v(^|\n)\~{4,}'
-" au FileType rst let b:presenting_slide_separator = '\v(^|\n)\~{4,}'
-" Diagon Remaps
-noremap <Leader>dm :Diagon Math<CR>
-noremap <Leader>ds :Diagon Sequence<CR>
-noremap <Leader>dt :Diagon Tree<CR>
-noremap <Leader>df :Diagon Frame<CR>
-noremap <Leader>db :Diagon Table<CR>
-noremap <Leader>dp :Diagon GraphPlanar<CR>
-noremap <Leader>dg :Diagon GraphDAG<CR>
-noremap <Leader>dc :Diagon Flowchart<CR>
-" Slides Presentation Settings
-" noremap <Left>  :silent bp<CR> :redraw!<CR>
-" noremap <Right> :silent bn<CR> :redraw!<CR>
-" nmap <F5> :set  number! showmode! showcmd! hidden! ruler!<CR>
-nmap <F6> :highlight! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg<CR>
 
 " Godbolt Settings
 lua << EOF
