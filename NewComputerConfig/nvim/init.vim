@@ -13,9 +13,9 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Plug 'vim-utils/vim-man'
 " Plug 'junegunn/goyo.vim'
 Plug 'scrooloose/nerdtree'
-" Plug 'wfxr/minimap.vim', {'do': ':!cargo install --locked code-minimap'}
 " Plug 'junegunn/limelight.vim'
 " Plug 'machakann/vim-sandwich'
+" Plug 'bfrg/vim-cpp-modern'
 Plug 'kevinhwang91/nvim-hlslens'
 Plug 'sainnhe/gruvbox-material'
 Plug 'habamax/vim-godot'
@@ -81,7 +81,7 @@ set foldnestmax=10
 nnoremap<space> za
 set foldmethod=indent
 set wrap
-set textwidth=80
+set textwidth=120
 set formatoptions=tcqrn1
 set tabstop=4
 set shiftwidth=4
@@ -360,6 +360,11 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>" Find files using Telescope command-line sugar.
 
+noremap <Leader>D :Diagon<Space>
+noremap <Leader>dm :Diagon Math<CR>
+noremap <Leader>ds :Diagon Sequence<CR>
+noremap <Leader>dt :Diagon Tree<CR>
+
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
@@ -433,7 +438,7 @@ EOF
 lua << EOF
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
-  ensure_installed = {"c", "lua", "rust", "javascript", "python", "cpp", "haskell", "go"},
+  ensure_installed = {"c", "python", "cpp"},
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -457,6 +462,23 @@ require'nvim-treesitter.configs'.setup {
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
+}
+EOF
+
+" Disable Copilot for .txt files
+lua << EOF
+vim.g.copilot_filetypes = {
+  ["*"] = false,
+  ["txt"] = false,
+  ["cpp"] = true,
+  ["c"] = true,
+  ["h"] = true,
+  ["hpp"] = true,
+  ["hxx"] = true,
+  ["cxx"] = true,
+  ["rs"] = true,
+  ["asm"] = true,
+  ["s"] = true,
 }
 EOF
 
