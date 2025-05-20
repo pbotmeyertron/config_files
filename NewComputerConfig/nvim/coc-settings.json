@@ -1,6 +1,7 @@
 {
    "clangd.enabled": true,
    "clangd.path": "/usr/bin/clangd",
+   "clangd.fallbackFlags": ["-std=c++23"],
    "clangd.arguments": ["--clang-tidy", "--completion-style=detailed", "--fallback-style=google", "--header-insertion=iwyu", "--suggest-missing-includes"],
    "cmake.lsp.enable": true,
    "inlayHint.enable": false
